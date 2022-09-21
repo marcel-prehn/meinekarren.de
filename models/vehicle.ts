@@ -21,20 +21,25 @@ export interface Vehicle {
 }
 
 export interface MilageItem {
+  uuid?: string;
+  vehicleUuid?: string;
   value: string;
-  timestamp: string;
+  timestamp?: string;
 }
 
 export interface TodoItem {
+  uuid?: string;
+  vehicleUuid?: string;
   name: string;
   isDone: boolean;
 }
 
 export interface ExpenseItem {
   uuid?: string;
+  vehicleUuid?: string;
   name: string;
   value: string;
-  timestamp: string;
+  timestamp?: string;
 }
 
 export interface ImageItem {
@@ -45,9 +50,10 @@ export interface ImageItem {
 
 export interface ConsumptionItem {
   uuid?: string;
+  vehicleUuid?: string;
   kilometers: string;
   liters: string;
-  timestamp: string;
+  timestamp?: string;
 }
 
 export interface StatisticItem {

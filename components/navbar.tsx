@@ -1,10 +1,8 @@
+import { useUser } from "@auth0/nextjs-auth0";
 import Link from "next/link";
-import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
 
 export const Navbar = () => {
-  const { user, isLoading } = useUser();
-
-  const accessToken = await getAccessToken();
+  const { user } = useUser();
 
   return (
     <nav className="bg-gray-800">
@@ -39,11 +37,7 @@ export const Navbar = () => {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <div className="text-white">
-              <a href="/api/auth/login">Login</a>
-              <a href="/api/auth/logout">Logout</a>
-              {!isLoading && user ? user.email : "-"}
-            </div>
+            <div className="text-white">{user ? <Link href="/api/auth/logout">Abmelden</Link> : <Link href="/api/auth/login">Anmelden</Link>}</div>
           </div>
         </div>
       </div>

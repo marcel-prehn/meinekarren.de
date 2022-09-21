@@ -13,57 +13,58 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
   const [todos, setTodos] = useState(props.todos);
   const [name, setName] = useState("");
 
-  useEffect(() => {
-    save();
-  }, [todos]);
-
-  const check = (name: string) => {
-    if (todos) {
-      const newTodos = todos.map((todo) => {
-        if (todo.name === name) {
+  const check = async (todo: TodoItem) => {
+    todo.vehicleUuid = props.vehicleUuid;
+    todo.isDone = !todo.isDone;
+    const result = await fetch(`/api/vehicle/todo`, {
+      method: "PUT",
+      body: JSON.stringify(todo),
+    });
+    if (result.status !== 200) {
+      props.onError();
+      console.error(result);
+    } else {
+      const newTodos = todos.map((t) => {
+        if (todo.uuid === t.uuid) {
           const updates = {
             ...todo,
-            isDone: !todo.isDone,
+            isDone: todo.isDone,
           };
           return updates;
         }
-        return todo;
+        return t;
       });
       setTodos(newTodos);
     }
   };
 
-  const remove = (remove: string) => {
-    if (todos) {
-      setTodos(todos.filter((todo) => todo.name !== remove));
-    }
-  };
-
-  const add = () => {
-    if (name.trim().length > 0) {
-      if (todos) {
-        if (!todos.find((i) => i.name.toUpperCase() === name.toUpperCase())) {
-          setTodos(todos.concat({ name: name, isDone: false }));
-          setName("");
-        } else {
-          props.onWarning("Aufgabe schon vorhanden.");
-        }
-      }
-    }
-  };
-
-  const save = async () => {
-    const result = await fetch(`/api/vehicle/${props.vehicleUuid}/todos`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ""`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(todos),
+  const remove = async (todo: TodoItem) => {
+    todo.vehicleUuid = props.vehicleUuid;
+    const result = await fetch(`/api/vehicle/todo`, {
+      method: "DELETE",
+      body: JSON.stringify(todo),
     });
     if (result.status !== 200) {
       props.onError();
       console.error(result);
+    } else {
+      setTodos(todos.filter((t) => todo.uuid !== t.uuid));
+    }
+  };
+
+  const save = async () => {
+    const todo: TodoItem = { name: name, vehicleUuid: props.vehicleUuid, isDone: false };
+    const result = await fetch(`/api/vehicle/todo`, {
+      method: "POST",
+      body: JSON.stringify(todo),
+    });
+    if (result.status !== 201) {
+      props.onError();
+      console.error(result);
+    } else {
+      const response: TodoItem = await result.json();
+      setTodos(todos.concat(response));
+      setName("");
     }
   };
 
@@ -75,12 +76,12 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
           todos.map((todo, index) => (
             <div className="flex flex-row" key={`flex-row-${index}`}>
               <div className="w-8" key={`icon-${index}`}>
-                <button onClick={() => remove(todo.name)}>
+                <button onClick={() => remove(todo)}>
                   <Trash size={24} key={`trash-${index}`} />
                 </button>
               </div>
               <div className="full-w leading-loose" key={`name-${index}`}>
-                <button onClick={() => check(todo.name)}>
+                <button onClick={() => check(todo)}>
                   <span className={todo.isDone ? "line-through" : ""}>{todo.name}</span>
                 </button>
               </div>
@@ -97,11 +98,11 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
               className="w-full form-input h-8 rounded border-inherit"
               value={name}
               onChange={({ target }) => setName(target.value)}
-              onKeyDown={({ key }) => (key === "Enter" ? add() : "")}
+              onKeyDown={({ key }) => (key === "Enter" ? save() : "")}
             />
           </div>
           <div className="w-16">
-            <button onClick={add}>
+            <button onClick={save}>
               <PlusSquare size={40} />
             </button>
           </div>

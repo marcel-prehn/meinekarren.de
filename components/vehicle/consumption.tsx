@@ -15,50 +15,33 @@ export const VehicleConsumption = (props: VehicleConsumptionProps) => {
   const [kilometers, setKilometers] = useState<string>("");
   const [liters, setLiters] = useState<string>("");
 
-  const add = async (item: ConsumptionItem) => {
-    const result = await fetch(`/api/vehicle/${props.vehicleUuid}/consumption`, {
+  const save = async () => {
+    const item: ConsumptionItem = { kilometers: kilometers, liters: liters, vehicleUuid: props.vehicleUuid };
+    const result = await fetch(`/api/vehicle/consumption`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ""`,
-        "Content-Type": "application/json",
-      },
       body: JSON.stringify(item),
     });
-    if (result.status === 201) {
-      setKilometers("");
-      setLiters("");
-    } else {
+    if (result.status !== 201) {
       props.onError();
       console.error(result);
+    } else {
+      const response: ConsumptionItem = await result.json();
+      setConsumption(consumption.concat(response).sort());
+      setKilometers("");
+      setLiters("");
     }
   };
 
-  const check = async () => {
-    if (kilometers.trim().length > 0 && liters.trim().length > 0) {
-      const newItem: ConsumptionItem = { kilometers: kilometers, liters: liters, timestamp: format(Date.now(), "yyyy-MM-dd") };
-      if (consumption && consumption.length > 0) {
-        await add(newItem);
-        setConsumption(consumption.concat(newItem).sort());
-      } else {
-        setConsumption([newItem]);
-      }
-    }
-  };
-
-  const remove = async (uuid: string) => {
-    if (consumption) {
-      setConsumption(consumption.filter((i) => i.uuid! !== uuid));
-      const result = await fetch(`/api/vehicle/${props.vehicleUuid}/consumption/${uuid}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ""`,
-          "Content-Type": "application/json",
-        },
-      });
-      if (result.status !== 200) {
-        props.onError();
-        console.error(result);
-      }
+  const remove = async (item: ConsumptionItem) => {
+    const result = await fetch(`/api/vehicle/consumption`, {
+      method: "DELETE",
+      body: JSON.stringify(item),
+    });
+    if (result.status !== 200) {
+      props.onError();
+      console.error(result);
+    } else {
+      setConsumption(consumption.filter((i) => i.uuid! !== item.uuid));
     }
   };
 
@@ -70,7 +53,7 @@ export const VehicleConsumption = (props: VehicleConsumptionProps) => {
           consumption.map((item, index) => (
             <div className="flex flex-row" key={`flex-row-${index}`}>
               <div className="w-1/12" key={`icon-${index}`}>
-                <button onClick={() => remove(item.uuid)}>
+                <button onClick={() => remove(item)}>
                   <Trash size={24} key={`trash-${index}`} />
                 </button>
               </div>
@@ -109,7 +92,7 @@ export const VehicleConsumption = (props: VehicleConsumptionProps) => {
             />
           </div>
           <div className="w-16">
-            <button onClick={check}>
+            <button onClick={save}>
               <PlusSquare size={40} />
             </button>
           </div>

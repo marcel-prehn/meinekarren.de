@@ -1,4 +1,3 @@
-import { XCircle } from "@styled-icons/boxicons-solid";
 import { parse } from "date-fns";
 import { useEffect, useState } from "react";
 import { Vehicle } from "../../models/vehicle";
@@ -23,7 +22,7 @@ export const VehicleDetails = (props: VehicleDetailsProps) => {
 
   useEffect(() => {
     if (props.uuid) {
-      fetch(`http://localhost:8002/api/vehicle/${props.uuid}`)
+      fetch(`/api/vehicle/${props.uuid}`)
         .then((res) => res.json())
         .then((data) => {
           setVehicle(data);
