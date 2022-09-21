@@ -46,7 +46,7 @@ export const VehicleDetails = (props: VehicleDetailsProps) => {
         {vehicle ? (
           <div className="p-4">
             <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
-              <VehicleInformation vehicle={vehicle} onError={errorHandler} />
+              <VehicleInformation information={vehicle.information} onError={errorHandler} />
               <VehicleTodos todos={vehicle.todos} vehicleUuid={vehicle.uuid} onError={errorHandler} onWarning={warningHandler} />
               <ProgressIndicator title="Nächste Hauptuntersuchung" deadline={parse(vehicle.tuv, "yyyy-mm", new Date())} years={2} />
               <ProgressIndicator title="Nächste Inspektion" deadline={parse(vehicle.inspection, "yyyy-mm-dd", new Date())} years={1} />

@@ -1,5 +1,17 @@
 export interface Vehicle {
   uuid?: string;
+  information: Information;
+  tuv: string;
+  inspection: string;
+  milage?: MilageItem[];
+  todos?: TodoItem[];
+  expenses?: ExpenseItem[];
+  consumption?: ConsumptionItem[];
+  images?: ImageItem[];
+}
+
+export interface Information {
+  vehicleUuid?: string;
   type?: string;
   name: string;
   maker: string;
@@ -9,15 +21,8 @@ export interface Vehicle {
   price?: string;
   hsn?: string;
   tsn?: string;
-  tuv: string;
   manufactured: string;
-  inspection: string;
   status?: string;
-  milage?: MilageItem[];
-  todos?: TodoItem[];
-  expenses?: ExpenseItem[];
-  consumption?: ConsumptionItem[];
-  images?: ImageItem[];
 }
 
 export interface MilageItem {

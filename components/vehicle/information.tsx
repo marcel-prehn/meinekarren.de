@@ -1,20 +1,20 @@
 import { format, parse } from "date-fns";
 import { useState } from "react";
-import { Vehicle } from "../../models/vehicle";
+import { Information } from "../../models/vehicle";
 
 interface VehicleInformationProps {
-  vehicle: Vehicle;
+  information: Information;
   onError: () => void;
 }
 
 export const VehicleInformation = (props: VehicleInformationProps) => {
-  const [vehicle, setVehicle] = useState(props.vehicle);
+  const [information, setInformation] = useState(props.information);
   const [edit, setEdit] = useState(false);
 
   const save = async () => {
-    const result = await fetch(`/api/vehicle/${vehicle.uuid}`, {
+    const result = await fetch(`/api/vehicle/information`, {
       method: "PUT",
-      body: JSON.stringify(vehicle),
+      body: JSON.stringify(information),
     });
     if (result.status !== 200) {
       props.onError();
@@ -25,7 +25,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
   };
 
   const setStatus = async (status: string) => {
-    setVehicle({ ...vehicle, status: status });
+    setInformation({ ...information, status: status });
     save();
   };
 
@@ -33,7 +33,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
     <div className="flex justify-center">
       <div className="p-6 rounded-lg shadow-lg bg-white w-full space-y-2">
         <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">
-          {vehicle.status === "SOLD" ? "VERKAUFT - " : ""}
+          {information.status === "SOLD" ? "VERKAUFT - " : ""}
           Fahrzeuginformationen
         </h5>
         <div className="flex">
@@ -45,23 +45,23 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.name}
-              onChange={(e) => setVehicle({ ...vehicle, name: e.target.value || "" })}
+              defaultValue={information.name}
+              onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.name}</div>
+            <div className="flex w-full">{information.name}</div>
           )}
         </div>
         <div className="flex">
           <div className="flex-initial w-64">Fahrzeugtyp</div>
           {edit ? (
-            <select defaultValue={vehicle.type || "UNKNOWN"} className="form-input h-10 rounded border-inherit w-full">
+            <select defaultValue={information.type || "UNKNOWN"} className="form-input h-10 rounded border-inherit w-full">
               <option value="UNKNOWN">unbekannt</option>
               <option value="CAR">Auto</option>
               <option value="BIKE">Motorrad</option>
             </select>
           ) : (
-            <div className="flex w-full">{vehicle.type}</div>
+            <div className="flex w-full">{information.type}</div>
           )}
         </div>
         <div className="flex">
@@ -73,11 +73,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.maker}
-              onChange={(e) => setVehicle({ ...vehicle, name: e.target.value || "" })}
+              defaultValue={information.maker}
+              onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.maker}</div>
+            <div className="flex w-full">{information.maker}</div>
           )}
         </div>
         <div className="flex">
@@ -89,11 +89,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.model}
-              onChange={(e) => setVehicle({ ...vehicle, model: e.target.value || "" })}
+              defaultValue={information.model}
+              onChange={(e) => setInformation({ ...information, model: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.model}</div>
+            <div className="flex w-full">{information.model}</div>
           )}
         </div>
         <div className="flex">
@@ -105,11 +105,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.licence}
-              onChange={(e) => setVehicle({ ...vehicle, licence: e.target.value || "" })}
+              defaultValue={information.licence}
+              onChange={(e) => setInformation({ ...information, licence: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.licence}</div>
+            <div className="flex w-full">{information.licence}</div>
           )}
         </div>
         <div className="flex">
@@ -121,11 +121,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.color}
-              onChange={(e) => setVehicle({ ...vehicle, color: e.target.value || "" })}
+              defaultValue={information.color}
+              onChange={(e) => setInformation({ ...information, color: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.color}</div>
+            <div className="flex w-full">{information.color}</div>
           )}
         </div>
         <div className="flex">
@@ -137,11 +137,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.hsn}
-              onChange={(e) => setVehicle({ ...vehicle, hsn: e.target.value || "" })}
+              defaultValue={information.hsn}
+              onChange={(e) => setInformation({ ...information, hsn: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.hsn}</div>
+            <div className="flex w-full">{information.hsn}</div>
           )}
         </div>
         <div className="flex">
@@ -153,11 +153,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.tsn}
-              onChange={(e) => setVehicle({ ...vehicle, tsn: e.target.value || "" })}
+              defaultValue={information.tsn}
+              onChange={(e) => setInformation({ ...information, tsn: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.tsn}</div>
+            <div className="flex w-full">{information.tsn}</div>
           )}
         </div>
         <div className="flex">
@@ -166,11 +166,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
             <input
               type="date"
               className="form-input h-8 rounded border-inherit w-full"
-              defaultValue={vehicle.manufactured}
-              onChange={(e) => setVehicle({ ...vehicle, manufactured: e.target.value || "" })}
+              defaultValue={information.manufactured}
+              onChange={(e) => setInformation({ ...information, manufactured: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.manufactured ? format(parse(vehicle.manufactured, "yyyy-MM-dd", Date.now()), "dd.MM.yyyy") : ""}</div>
+            <div className="flex w-full">{information.manufactured ? format(parse(information.manufactured, "yyyy-MM-dd", Date.now()), "dd.MM.yyyy") : ""}</div>
           )}
         </div>
         <div className="flex">
@@ -182,11 +182,11 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               minLength={1}
               required
               className="form-input h-8 rounded border-inherit w-full"
-              value={vehicle.price}
-              onChange={(e) => setVehicle({ ...vehicle, price: e.target.value || "" })}
+              value={information.price}
+              onChange={(e) => setInformation({ ...information, price: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{vehicle.price}</div>
+            <div className="flex w-full">{information.price}</div>
           )}
         </div>
         <div>
@@ -204,7 +204,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               <button type="button" className="p-2 bg-yellow-100 rounded shadow-md hover:bg-slate-300 w-32" onClick={() => setEdit(true)}>
                 Bearbeiten
               </button>
-              {vehicle.status !== "SOLD" ? (
+              {information.status !== "SOLD" ? (
                 <button type="button" className="p-2 bg-red-100 rounded shadow-md hover:bg-slate-300 w-32" onClick={() => setStatus("SOLD")}>
                   Verkauft
                 </button>
