@@ -1,8 +1,11 @@
+import { Cart, Edit, Trash } from "@styled-icons/boxicons-solid";
 import { format, parse } from "date-fns";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { Information } from "../../models/vehicle";
 
 interface VehicleInformationProps {
+  vehicleUuid: string;
   information: Information;
   onError: () => void;
 }
@@ -10,8 +13,10 @@ interface VehicleInformationProps {
 export const VehicleInformation = (props: VehicleInformationProps) => {
   const [information, setInformation] = useState(props.information);
   const [edit, setEdit] = useState(false);
+  const router = useRouter();
 
   const save = async () => {
+    information.vehicleUuid = props.vehicleUuid;
     const result = await fetch(`/api/vehicle/information`, {
       method: "PUT",
       body: JSON.stringify(information),
@@ -24,20 +29,36 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
     }
   };
 
+  const remove = async () => {
+    const result = await fetch(`/api/vehicle/${props.vehicleUuid}`, {
+      method: "DELETE",
+    });
+    if (result.status !== 200) {
+      props.onError();
+      console.error(result);
+    } else {
+      setEdit(false);
+      router.push("/vehicles");
+    }
+  };
+
   const setStatus = async (status: string) => {
     setInformation({ ...information, status: status });
     save();
   };
 
   return (
-    <div className="flex justify-center">
-      <div className="p-6 rounded-lg shadow-lg bg-white w-full space-y-2">
-        <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">
-          {information.status === "SOLD" ? "VERKAUFT - " : ""}
-          Fahrzeuginformationen
-        </h5>
-        <div className="flex">
-          <div className="flex-initial w-64">Bezeichnung</div>
+    <div className="p-6 rounded-lg shadow-lg bg-white w-full">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="col-span-2">
+          <h5 className="text-black text-xl leading-tight font-medium mb-2">
+            {information.status === "SOLD" ? "VERKAUFT - " : ""}
+            Infos
+          </h5>
+        </div>
+
+        <div>Bezeichnung</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
@@ -49,11 +70,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.name}</div>
+            information.name
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Fahrzeugtyp</div>
+
+        <div className="">Fahrzeugtyp</div>
+        <div className="flex w-full">
           {edit ? (
             <select defaultValue={information.type || "UNKNOWN"} className="form-input h-10 rounded border-inherit w-full">
               <option value="UNKNOWN">unbekannt</option>
@@ -61,11 +83,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               <option value="BIKE">Motorrad</option>
             </select>
           ) : (
-            <div className="flex w-full">{information.type}</div>
+            information.type
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Hersteller</div>
+
+        <div className="">Hersteller</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
@@ -77,11 +100,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.maker}</div>
+            information.maker
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Modell</div>
+
+        <div className="">Modell</div>
+        <div className="flex w-full">
           {edit ? (
             <input
               type="text"
@@ -93,11 +117,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, model: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.model}</div>
+            information.model
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Kennzeichen</div>
+
+        <div className="">Kennzeichen</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
@@ -109,27 +134,29 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, licence: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.licence}</div>
+            information.licence
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Farbe</div>
+
+        <div className="">Farbe</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.color}
               onChange={(e) => setInformation({ ...information, color: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.color}</div>
+            information.color
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">HSN</div>
+
+        <div className="">HSN</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
@@ -141,11 +168,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, hsn: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.hsn}</div>
+            information.hsn
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">TSN</div>
+
+        <div className="">TSN</div>
+        <div className="">
           {edit ? (
             <input
               type="text"
@@ -157,11 +185,12 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, tsn: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.tsn}</div>
+            information.tsn
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Baujahr</div>
+
+        <div className="">Baujahr</div>
+        <div className="">
           {edit ? (
             <input
               type="date"
@@ -169,12 +198,15 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               defaultValue={information.manufactured}
               onChange={(e) => setInformation({ ...information, manufactured: e.target.value || "" })}
             />
+          ) : information.manufactured ? (
+            format(parse(information.manufactured, "yyyy-MM-dd", Date.now()), "dd.MM.yyyy")
           ) : (
-            <div className="flex w-full">{information.manufactured ? format(parse(information.manufactured, "yyyy-MM-dd", Date.now()), "dd.MM.yyyy") : ""}</div>
+            ""
           )}
         </div>
-        <div className="flex">
-          <div className="flex-initial w-64">Kaufpreis</div>
+
+        <div className="">Kaufpreis</div>
+        <div className="">
           {edit ? (
             <input
               type="number"
@@ -186,33 +218,74 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               onChange={(e) => setInformation({ ...information, price: e.target.value || "" })}
             />
           ) : (
-            <div className="flex w-full">{information.price}</div>
+            information.price
           )}
         </div>
+
+        <div className="">TÜV bis</div>
+        <div className="">
+          {edit ? (
+            <input
+              type="date"
+              required
+              className="form-input h-8 rounded border-inherit w-full"
+              value={information.tuv}
+              onChange={(e) => setInformation({ ...information, tuv: e.target.value || "" })}
+            />
+          ) : information.tuv ? (
+            format(parse(information.tuv, "yyyy-MM-dd", new Date()), "dd.MM.yyyy")
+          ) : (
+            "-"
+          )}
+        </div>
+
+        <div className="">Inspektion</div>
+        <div className="flex w-full">
+          {edit ? (
+            <input
+              type="date"
+              required
+              className="form-input h-8 rounded border-inherit w-full"
+              value={information.inspection}
+              onChange={(e) => setInformation({ ...information, inspection: e.target.value || "" })}
+            />
+          ) : information.inspection ? (
+            format(parse(information.inspection, "yyyy-MM-dd", new Date()), "dd.MM.yyyy")
+          ) : (
+            "-"
+          )}
+        </div>
+      </div>
+      <div>
         <div>
           {edit ? (
             <div className="space-x-4 mt-8">
-              <button type="button" className="p-2 bg-slate-200 rounded shadow-md hover:bg-slate-300 w-32" onClick={save}>
+              <button type="button" className="p-2 w-full bg-black text-white rounded shadow-md hover:bg-yellow hover:text-black" onClick={save}>
                 Speichern
               </button>
-              <button type="button" className="p-2 bg-slate-100 rounded shadow-md hover:bg-slate-200 w-32" onClick={() => setEdit(false)}>
+              <button type="button" className="p-2 w-full bg-gray-dark text-white rounded shadow-md hover:bg-yellow hover:text-black" onClick={() => setEdit(false)}>
                 Abbrechen
               </button>
             </div>
           ) : (
-            <div className="space-x-4 mt-8">
-              <button type="button" className="p-2 bg-yellow-100 rounded shadow-md hover:bg-slate-300 w-32" onClick={() => setEdit(true)}>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+              <button type="button" className="p-2 w-full bg-black text-white rounded shadow-md hover:bg-yellow hover:text-black" onClick={() => setEdit(true)}>
+                <Edit size={16} className="mx-2" />
                 Bearbeiten
               </button>
               {information.status !== "SOLD" ? (
-                <button type="button" className="p-2 bg-red-100 rounded shadow-md hover:bg-slate-300 w-32" onClick={() => setStatus("SOLD")}>
+                <button type="button" className="p-2 w-full bg-gray-dark text-black rounded shadow-md hover:bg-yellow hover:text-black" onClick={() => setStatus("SOLD")}>
+                  <Cart size={16} className="mx-2" />
                   Verkauft
                 </button>
               ) : (
-                <button type="button" className="p-2 bg-red-100 rounded shadow-md hover:bg-slate-300 w-32" onClick={() => setStatus("")}>
+                <button type="button" className="p-2 w-full bg-gray-dark text-black rounded shadow-md hover:bg-yellow hover:text-black" onClick={() => setStatus("")}>
                   Nicht verkauft
                 </button>
               )}
+              <button type="button" className="p-2 w-full bg-gray-dark text-black rounded shadow-md hover:bg-yellow hover:text-black" onClick={remove}>
+                <Trash size={16} className="mx-2" /> Löschen
+              </button>
             </div>
           )}
         </div>

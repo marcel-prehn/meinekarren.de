@@ -1,9 +1,10 @@
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { Loader } from "@styled-icons/boxicons-regular";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import { Footer } from "../../components/footer";
 import { Navbar } from "../../components/navbar";
 import { Overview } from "../../components/vehicle/overview";
-
 import { Vehicle } from "../../models/vehicle";
 
 export default function Vehicles() {
@@ -30,9 +31,19 @@ export default function Vehicles() {
       </Head>
       <div className="w-full">
         <Navbar />
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">{vehicles ? <Overview vehicles={vehicles} /> : <div>Loading</div>}</div>
+        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 mt-4">
+          {vehicles ? (
+            <Overview vehicles={vehicles} />
+          ) : (
+            <div className="w-full flex items-center justify-center mt-4">
+              <Loader size="32" className="animate-spin" />
+            </div>
+          )}
+        </div>
         <Footer />
       </div>
     </div>
   );
 }
+
+export const getServerSideProps = withPageAuthRequired();

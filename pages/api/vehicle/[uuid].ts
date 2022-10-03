@@ -26,4 +26,15 @@ export default withApiAuthRequired(async function vehicle(req, res) {
     });
     res.status(response.status).json("");
   }
+
+  if (req.method === "DELETE") {
+    const response = await fetch(`${process.env.API_BASE_URL}/vehicle/${uuid}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    res.status(response.status).json("");
+  }
 });

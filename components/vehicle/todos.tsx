@@ -1,5 +1,5 @@
-import { PlusSquare, Trash } from "@styled-icons/boxicons-solid";
-import { useEffect, useState } from "react";
+import { Plus, PlusCircle, Trash } from "@styled-icons/boxicons-regular";
+import { useState } from "react";
 import { TodoItem } from "../../models/vehicle";
 
 interface VehicleTodoProps {
@@ -69,12 +69,12 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex">
       <div className="p-6 rounded-lg shadow-lg bg-white w-full">
-        <h5 className="text-gray-900 text-xl leading-tight font-medium mb-2">Offene Aufgaben</h5>
+        <h5 className="text-xl font-medium mb-4">Offene Aufgaben</h5>
         {todos && todos.length > 0 ? (
           todos.map((todo, index) => (
-            <div className="flex flex-row" key={`flex-row-${index}`}>
+            <div className="flex flex-row border-b border-gray-dark" key={`flex-row-${index}`}>
               <div className="w-8" key={`icon-${index}`}>
                 <button onClick={() => remove(todo)}>
                   <Trash size={24} key={`trash-${index}`} />
@@ -95,7 +95,7 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
             <input
               type={"text"}
               placeholder="Neue Aufgabe"
-              className="w-full form-input h-8 rounded border-inherit"
+              className="w-full form-input h-8 rounded border-gray-light"
               value={name}
               onChange={({ target }) => setName(target.value)}
               onKeyDown={({ key }) => (key === "Enter" ? save() : "")}
@@ -103,7 +103,7 @@ export const VehicleTodos = (props: VehicleTodoProps) => {
           </div>
           <div className="w-16">
             <button onClick={save}>
-              <PlusSquare size={40} />
+              <PlusCircle className="text-black mx-4" size={28} />
             </button>
           </div>
         </div>
