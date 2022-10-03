@@ -1,3 +1,4 @@
+import { Car, Cycling, QuestionMark } from "@styled-icons/boxicons-regular";
 import { ChevronRight } from "@styled-icons/boxicons-solid";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -36,7 +37,7 @@ export const Overview = (props: OverviewProps) => {
                 {props.vehicles.map((v, index) => (
                   <tr className="border-b border-gray-dark hover:bg-yellow" key={`row-${index}`} onClick={() => router.push(`/vehicles/${v.uuid}`)}>
                     <td className="text-sm text-black font-light px-6 py-4 whitespace-nowrap" key={`cell-type-${index}`}>
-                      {v.information.type || "NONE"}
+                      <span>{v.information.type ? v.information.type === "CAR" ? <Car size={16} /> : <Cycling size={16} /> : <QuestionMark size={16} />}</span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" key={`cell-name-${index}`}>
                       {v.information.name}

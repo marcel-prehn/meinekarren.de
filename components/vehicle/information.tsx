@@ -2,6 +2,8 @@ import { Cart, Edit, Trash } from "@styled-icons/boxicons-solid";
 import { format, parse } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { COLORS } from "../../models/colors";
+import { TYPES } from "../../models/types";
 import { Information } from "../../models/vehicle";
 
 interface VehicleInformationProps {
@@ -53,7 +55,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
         <div className="col-span-2">
           <h5 className="text-black text-xl leading-tight font-medium mb-2">
             {information.status === "SOLD" ? "VERKAUFT - " : ""}
-            Infos
+            Informationen
           </h5>
         </div>
 
@@ -65,7 +67,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.name}
               onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
@@ -77,13 +79,13 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
         <div className="">Fahrzeugtyp</div>
         <div className="flex w-full">
           {edit ? (
-            <select defaultValue={information.type || "UNKNOWN"} className="form-input h-10 rounded border-inherit w-full">
+            <select defaultValue={information.type || "UNKNOWN"} className="form-input h-10 rounded border-gray-light w-full">
               <option value="UNKNOWN">unbekannt</option>
               <option value="CAR">Auto</option>
               <option value="BIKE">Motorrad</option>
             </select>
           ) : (
-            information.type
+            TYPES.get(information.type)
           )}
         </div>
 
@@ -95,7 +97,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.maker}
               onChange={(e) => setInformation({ ...information, name: e.target.value || "" })}
             />
@@ -112,7 +114,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.model}
               onChange={(e) => setInformation({ ...information, model: e.target.value || "" })}
             />
@@ -129,7 +131,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.licence}
               onChange={(e) => setInformation({ ...information, licence: e.target.value || "" })}
             />
@@ -141,17 +143,20 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
         <div className="">Farbe</div>
         <div className="">
           {edit ? (
-            <input
-              type="text"
-              maxLength={50}
-              minLength={1}
-              required
-              className="form-input h-8 rounded border-gray-light w-full"
-              defaultValue={information.color}
-              onChange={(e) => setInformation({ ...information, color: e.target.value || "" })}
-            />
+            <select className="rounded border-gray-light w-full block" name="color" id="color" onChange={(e) => setInformation({ ...information, color: e.target.value })}>
+              <option value={"NONE"}>keine</option>
+              <option value={"WHITE"}>weiß</option>
+              <option value={"SILVER"}>silber</option>
+              <option value={"BLACK"}>schwarz</option>
+              <option value={"GREY"}>grau</option>
+              <option value={"RED"}>rot</option>
+              <option value={"YELLOW"}>gelb</option>
+              <option value={"GREEN"}>grün</option>
+              <option value={"BLUE"}>blau</option>
+              <option value={"BEIGE"}>beige</option>
+            </select>
           ) : (
-            information.color
+            COLORS.get(information.color)
           )}
         </div>
 
@@ -163,7 +168,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.hsn}
               onChange={(e) => setInformation({ ...information, hsn: e.target.value || "" })}
             />
@@ -180,7 +185,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.tsn}
               onChange={(e) => setInformation({ ...information, tsn: e.target.value || "" })}
             />
@@ -194,7 +199,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
           {edit ? (
             <input
               type="date"
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               defaultValue={information.manufactured}
               onChange={(e) => setInformation({ ...information, manufactured: e.target.value || "" })}
             />
@@ -213,7 +218,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
               maxLength={50}
               minLength={1}
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               value={information.price}
               onChange={(e) => setInformation({ ...information, price: e.target.value || "" })}
             />
@@ -228,7 +233,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
             <input
               type="date"
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               value={information.tuv}
               onChange={(e) => setInformation({ ...information, tuv: e.target.value || "" })}
             />
@@ -245,7 +250,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
             <input
               type="date"
               required
-              className="form-input h-8 rounded border-inherit w-full"
+              className="form-input h-8 rounded border-gray-light w-full"
               value={information.inspection}
               onChange={(e) => setInformation({ ...information, inspection: e.target.value || "" })}
             />
@@ -259,7 +264,7 @@ export const VehicleInformation = (props: VehicleInformationProps) => {
       <div>
         <div>
           {edit ? (
-            <div className="space-x-4 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
               <button type="button" className="p-2 w-full bg-black text-white rounded shadow-md hover:bg-yellow hover:text-black" onClick={save}>
                 Speichern
               </button>

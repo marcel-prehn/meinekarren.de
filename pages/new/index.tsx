@@ -35,15 +35,15 @@ export default function New() {
         <Navbar />
         <div className="container mx-auto px-2 px-6 md:px-8 mt-8">
           <div className="p-6 rounded-lg shadow-lg bg-white">
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <form onSubmit={save}>
+            <form onSubmit={save}>
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
                 <div className="mb-4 md:col-span-2">
                   <label className="mb-2 text-lg" htmlFor="name">
                     Bezeichnung (optional)
                   </label>
                   <input
                     placeholder="Kombi"
-                    className="form-control rounded border-gray-light w-full"
+                    className="rounded border-gray-light w-full"
                     type="text"
                     name="name"
                     id="name"
@@ -51,13 +51,13 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg font-bold" htmlFor="maker">
                     Hersteller
                   </label>
                   <input
                     placeholder="BMW"
-                    className="form-control rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     required
                     type="text"
                     name="maker"
@@ -66,13 +66,13 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg font-bold" htmlFor="model">
                     Modell
                   </label>
                   <input
                     placeholder="316d"
-                    className="form-control rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     required
                     type="text"
                     name="model"
@@ -81,29 +81,24 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="type">
                     Fahrzeugtyp
                   </label>
-                  <select
-                    className="select-control rounded border-gray-light w-full block"
-                    name="type"
-                    id="type"
-                    onChange={(e) => setInformation({ ...information, type: e.target.value })}
-                  >
+                  <select className="rounded border-gray-light w-full block" name="type" id="type" onChange={(e) => setInformation({ ...information, type: e.target.value })}>
                     <option value={"NONE"}>unbekannt</option>
                     <option value={"CAR"}>Auto</option>
                     <option value={"BIKE"}>Motorrad</option>
                   </select>
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="licence">
                     Kennzeichen (optional)
                   </label>
                   <input
                     placeholder="AB-C1234"
-                    className="form-control rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     type="text"
                     name="licence"
                     id="licence"
@@ -111,16 +106,11 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="color">
                     Farbe (optional)
                   </label>
-                  <select
-                    className="select-control rounded border-gray-light w-full block"
-                    name="color"
-                    id="color"
-                    onChange={(e) => setInformation({ ...information, color: e.target.value })}
-                  >
+                  <select className="rounded border-gray-light w-full block" name="color" id="color" onChange={(e) => setInformation({ ...information, color: e.target.value })}>
                     <option value={"NONE"}>keine</option>
                     <option value={"WHITE"}>weiß</option>
                     <option value={"SILVER"}>silber</option>
@@ -134,12 +124,12 @@ export default function New() {
                   </select>
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="manufactured">
                     Baujahr (optional)
                   </label>
                   <input
-                    className="form-control rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     type="date"
                     name="manufactured"
                     id="manufactured"
@@ -147,12 +137,12 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="inspection">
                     Nächste Inspektion (optional)
                   </label>
                   <input
-                    className="form-control rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     type="date"
                     name="inspection"
                     id="inspection"
@@ -160,24 +150,25 @@ export default function New() {
                   />
                 </div>
 
-                <div className="form-group mb-4">
+                <div className="mb-4">
                   <label className="mb-2 text-lg" htmlFor="tuv">
-                    Nächste Hauptuntersuchung (optional)
+                    Nächste HU (optional)
                   </label>
                   <input
-                    className="form-input rounded border-gray-light block w-full"
+                    className="rounded border-gray-light block w-full"
                     type="date"
                     name="tuv"
                     id="tuv"
                     onChange={(e) => setInformation({ ...information, tuv: e.target.value })}
                   />
                 </div>
-
-                <button className="col-span-2 p-2 bg-black text-white hover:bg-yellow hover:text-black rounded shadow-md w-32" type="submit">
-                  Eintragen
-                </button>
-              </form>
-            </div>
+                <div className="w-full">
+                  <button className="w-full p-2 bg-black text-white hover:bg-yellow hover:text-black rounded shadow-md" type="submit">
+                    Eintragen
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
 
